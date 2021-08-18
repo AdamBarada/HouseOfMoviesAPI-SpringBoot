@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:8080/shared/styles.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:8080/login/css/login.css">
+    <link rel="shortcut icon" href="http://localhost:8080/images/logo.png">
+</head>
+
+<body>
+    <div id="header" class="newHeader">
+    </div>
+    <div id="cover">
+        <div id="loop" class="center"></div>
+        <div id="bike-wrapper" class="center">
+            <div id="bike" class="centerBike"></div>
+        </div>
+    </div>
+    <div class="login">
+        <div class="wrap">
+            <div class="content">
+                <div id="slideshow">
+                    <div class="one">
+                        <h2><span>SIGN UP</span></h2>
+                        <p>Sign up to book and attend your favorite movie screening</p>
+                    </div>
+                    <div class="two">
+                        <h2><span>EXPLORE</span></h2>
+                        <p>Explore all the available movies and screening times in our theatre</p>
+                    </div>
+                </div>
+            </div>
+            <div class="user">
+                <div class="form-wrap">
+                    <div class="tabs">
+                        <h3 class="login-tab"><a class="log-in active" href="#login-tab-content"><span>Login</span></a>
+                        </h3>
+                        <h3 class="signup-tab"><a class="sign-up" href="#signup-tab-content"><span>Sign Up</span></a>
+                        </h3>
+                    </div>
+                    <div class="tabs-content">
+                        <div id="login-tab-content" class="active">
+                            <form class="login-form">
+                                <input type="email" name="email" class="input-login" id="user_login" autocomplete="off" placeholder="Email">
+                                <input type="password" name="password" class="input-login" id="user_pass_login" autocomplete="off" placeholder="Password">
+                                <input type="checkbox" class="checkbox" checked id="remember_me">
+                                <label for="remember_me" class="check">Remember me</label>
+                                <input type="submit" class="button" id="sign-in-button" value="Login">
+                                <label id="error"></label>
+                            </form>
+                        </div>
+                        <div id="signup-tab-content">
+                            <form class="signup-form">
+                                <input type="text" name="fname" class="input-login" id="user_fname" autocomplete="off" placeholder="First name">
+                                <input type="text" name="lname" class="input-login" id="user_lname" autocomplete="off" placeholder="Last name">
+                                <input type="email" name="email" class="input-login" id="user_email" autocomplete="off" placeholder="Email">
+                                <input type="password" name="password" class="input-login" id="user_pass" autocomplete="off" placeholder="Password">
+                                <input type="submit" class="button" id="sign-up-button" value="Sign Up">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="http://localhost:8080/login/js/validation.js"></script>
+    <script type="text/javascript" src="http://localhost:8080/login/js/login.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#header').load('http://localhost:8080/shared/header.html');
+            $('#footer').load('http://localhost:8080/shared/footer.html');
+        });
+    </script>
+</body>
+
+</html>

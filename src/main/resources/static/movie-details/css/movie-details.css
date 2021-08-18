@@ -1,0 +1,110 @@
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.background-container {
+    width: 100vw;
+    background-blend-mode: multiply;
+}
+
+.background-container img {
+    width: 100%;
+    height: 600;
+    filter: brightness(80%) grayscale(20%);
+    display: block;
+    opacity: 70%;
+}
+
+.shifted-up {
+    margin-top: -35%;
+    margin-bottom: 19%;
+}
+
+@media screen and (max-width: 1900px) {
+    .shifted-up {
+        margin-bottom: 15%;
+    }
+}
+
+.shifted-down {
+    padding: 2%;
+}
+
+.info-container {
+    margin: 10px;
+    color: whitesmoke;
+    z-index: 999;
+}
+
+.info-container img {
+    width: 250px;
+    display: block;
+    margin: 0 auto;
+    border: darkgrey solid thin;
+}
+
+@media screen and (max-width: 992px) {
+    .info-container {
+        margin-bottom: 10%;
+    }
+    .info-container .text-container {
+        margin-top: 3%;
+    }
+    .info-container h1 {
+        font-size: 1.8rem;
+        padding: 0 10%;
+    }
+    .info-container img {
+        width: 60%;
+    }
+    .info-container p {
+        padding: 0 10%;
+    }
+}
+
+.info-container .pg-18 {
+    font-size: 1rem;
+}
+
+.info-container .imdb-button {
+    margin-top: 30px;
+    font-size: 14px;
+    text-decoration: none;
+    background: rgb(56, 44, 124);
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 40px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.info-container .imdb-button:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.general-container {
+    position: relative;
+    height: fit-content;
+    width: auto;
+    margin-bottom: 5%;
+}
+
+.reviews {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.reviews .review-content {
+    width: 80%;
+    background-color: grey;
+    padding: 3%;
+    border-radius: 25px;
+}
+
+.reviews .review-content h3 {
+    color: grey;
+}

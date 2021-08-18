@@ -7,5 +7,5 @@ import entities.Room;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
-
+	Room findByName(String name);
 }

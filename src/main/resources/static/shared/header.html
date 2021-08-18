@@ -1,0 +1,80 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<script src="https://kit.fontawesome.com/c8e4d183c2.js" crossorigin="anonymous"></script>
+<nav>
+    <img src="http://localhost:8080/images/logoNav.png" width="300px" height="60px" />
+    <input type="checkbox" class="menu-btn" id="menu-btn" />
+    <label class="menu-icon" for="menu-btn">
+        <span class="nav-icon"></span>
+    </label>
+    <ul class="menu">
+        <li><a href="/" id="home">Home</a></li>
+        <li><a href="/movies" id="movies">Movies</a></li>
+        <li><a href="/screenings" id="screenings">Screenings</a></li>
+        <li><a href="/reservations" id="reservations">Reservations</a></li>
+        <li><a href="/login" id="login">Login</a></li>
+    </ul>
+    <div class="search">
+        <input type="text" placeholder="Find Your Favourite Movies" id="searchInput" />
+        <i class="fas fa-search"></i>
+    </div>
+</nav>
+<script>
+    if (localStorage["token"] || sessionStorage["token"]) {
+        $('#login').text('LOGOUT');
+        $('#login').click(function() {
+            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
+        });
+    } else {
+        $('#reservations').remove();
+    }
+
+    if (window.location.href == "http://localhost:8080/") {
+        $('#home').css({
+            'color': 'white',
+            'background': 'rgb(67,68,70)',
+            'cursor': 'default'
+        });
+        $('#home').bind('click', false);
+    } else if (window.location.href == "http://localhost:8080/login") {
+        $('#login').css({
+            'color': 'white',
+            'background': 'rgb(79,80,82)',
+            'cursor': 'default'
+        });
+        $('#login').bind('click', false);
+
+    } else if (window.location.href == "http://localhost:8080/movies") {
+        $('#movies').css({
+            'color': 'white',
+            'background': 'rgb(71,72,76)',
+            'cursor': 'default'
+        });
+        $('#movies').bind('click', false);
+
+    } else if (window.location.href == "http://localhost:8080/reservations") {
+        $('#reservations').css({
+            'color': 'white',
+            'background': 'rgb(75,76,78)',
+            'cursor': 'default'
+        });
+        $('#reservations').bind('click', false);
+    } else if (window.location.href == "http://localhost:8080/screenings") {
+        $('#screenings').css({
+            'color': 'white',
+            'background': 'rgb(73,74,76)',
+            'cursor': 'default'
+        });
+        $('#screenings').bind('click', false);
+    }
+    document.querySelector('#searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            if ($('#searchInput').val()) {
+                localStorage.setItem("queryVal", $('#searchInput').val());
+                window.location = '/movies';
+            }
+        }
+    });
+</script>
+
+</html>

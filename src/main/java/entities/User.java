@@ -13,7 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -21,6 +25,7 @@ import javax.persistence.UniqueConstraint;
 public class User {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	
 	@Column(name = "first_name")
@@ -30,15 +35,20 @@ public class User {
 	private String lastName;
 	
 	private String email;
+	
+	@JsonIgnore
 	private String password;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinTable(
 			name = "users_roles",
 			joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
 			)
 	private Collection<Role> roles;
+	
+	@Transient
+	private int nbReservations;
 	
 	public User() {}
 	
@@ -97,5 +107,21 @@ public class User {
 	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", roles=" + roles + "]";
+	}
+	
+	public int getNbReservations() {
+		return nbReservations;
+	}
+
+	public void setNbReservations(int nbReservations) {
+		this.nbReservations = nbReservations;
+	}
+	
+	
 	
 }

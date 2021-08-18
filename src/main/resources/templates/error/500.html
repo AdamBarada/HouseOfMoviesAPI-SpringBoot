@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Error</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://localhost:8080/error/css/error.css" />
+    <link type="text/css" rel="stylesheet" href="http://localhost:8080/shared/styles.css" />
+    <link rel="shortcut icon" href="http://localhost:8080/images/logo.png">
+
+
+</head>
+
+<body>
+    <div id="header"></div>
+    <div id="notfound">
+        <div class="notfound">
+            <div class="notfound-404">
+                <h1>Oops!</h1>
+            </div>
+            <h2>500 - Internal Server Error</h2>
+            <p>The server has been deserted for a while.<br> Please be patient or try again later.</p>
+            <a href="http://localhost:8080">Go To Homepage</a>
+        </div>
+    </div>
+    <div id="footer" style="position: absolute; bottom: 0; width: 100%;"></div>
+    <script>
+        $(document).ready(function() {
+            $('#header').load('http://localhost:8080/shared/header.html');
+            $('#footer').load('http://localhost:8080/shared/footer.html');
+        });
+    </script>
+</body>
+
+</html>

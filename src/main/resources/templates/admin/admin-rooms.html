@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.14/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" href="http://localhost:8080/reservations-list/css/reservations-list.css">
+<link rel="stylesheet" href="http://localhost:8080/shared/styles.css">
+<script
+src="https://code.jquery.com/jquery-3.3.1.js"
+integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+crossorigin="anonymous">
+</script>
+<script>    $('#spinner').load('./shared/spinner.html');
+</script>
+<title></title>
+</head>
+<div id="header" style="margin-bottom: 70px; ">
+</div>
+<body>
+    <div id="cover">
+        <div id="loop" class="center"></div>
+    <div id="bike-wrapper" class="center">
+      <div id="bike" class="centerBike"></div>
+    </div>
+    </div>
+    <div class="container p-30">
+        <div class="row" style="margin-top: -13px;">
+            <div class="col-md-12 main-datatable">
+                <div class="card_body">
+                    <div class="row d-flex">
+                        <div class="col-sm-4 createSegment"> 
+                        </div>
+                        <div class="col-sm-8 add_flex">
+                            <div class="form-group searchInput">
+                                <label for="email">Search:</label>
+                                <input type="search" class="form-control" id="filterbox" placeholder=" ">
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="overflow-x">
+                        <table style="width:100%;" id="filtertable" class="table cust-datatable dataTable no-footer">
+                            <thead>
+                                <tr>
+                                    <th style="min-width:75px;">ID</th>
+                                    <th style="min-width:150px;">Name</th>
+                                    <th style="min-width:150px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableData">    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer" style="position: absolute; bottom: 0; width: 100%;"></div>
+    <script>    
+        $(document).ready(function() {
+            $('#header').load('http://localhost:8080/shared/header.html');
+            $('#footer').load('http://localhost:8080/shared/footer.html');  
+          });
+        </script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.14/js/jquery.dataTables.min.js"></script>
+<script src="http://localhost:8080/admin-static/rooms/js/rooms.js"></script>
+</body>
+</html>
+

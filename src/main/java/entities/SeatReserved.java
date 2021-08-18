@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "seats_reserved")
 public class SeatReserved {
@@ -17,20 +19,30 @@ public class SeatReserved {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Seat.class, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Seat.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "seat_id")
 	private Seat seat;
 	
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Reservation.class, cascade = CascadeType.ALL)
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Reservation.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "reservation_id")
 	private Reservation reservation;
 	
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Screening.class, cascade = CascadeType.ALL)
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Screening.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "screening_id")
 	private Screening screening;
 
 	public SeatReserved() {}
 	
+	public SeatReserved(Seat seat, Reservation reservation, Screening screening) {
+		super();
+		this.seat = seat;
+		this.reservation = reservation;
+		this.screening = screening;
+	}
+
+
 	public Long getId() {
 		return id;
 	}

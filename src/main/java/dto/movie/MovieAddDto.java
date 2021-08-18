@@ -1,4 +1,7 @@
+
 package dto.movie;
+
+import java.util.List;
 
 public class MovieAddDto {
 	
@@ -7,17 +10,27 @@ public class MovieAddDto {
 	private String cast;
 	private String description;
 	private int duration;
-	//  private String image;	// image?? file??
+	private List<Long> categories;
+	private String releaseDate;
+	private String trailer;
+	private String image;
+	private String landscape;
 	
 	public MovieAddDto() {}
 	
-	public MovieAddDto(String title, String director, String cast, String description, int duration) {
+	public MovieAddDto(String title, String director, String cast, String description, int duration, 
+			List<Long> categories, String releaseDate, String trailer, String image, String landscape) {
 		super();
 		this.title = title;
 		this.director = director;
 		this.cast = cast;
 		this.description = description;
 		this.duration = duration;
+		this.categories = categories;
+		this.releaseDate = releaseDate;
+		this.trailer = trailer;
+		this.image = image;
+		this.landscape = landscape;
 	}
 
 	public String getTitle() {
@@ -59,6 +72,46 @@ public class MovieAddDto {
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
-	
+
+	public String getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(String releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	public String getTrailer() {
+		return trailer;
+	}
+
+	public void setTrailer(String trailer) {
+		this.trailer = trailer;
+	}
+
+	public List<Long> getCategories() {
+		return categories;
+	}
+
+	public void setCategories_id(List<Long> categories) {
+		this.categories = categories;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getLandscape() {
+		return landscape;
+	}
+
+	public void setLandscape(String landscape) {
+		this.landscape = landscape;
+	}
+
 	
 }

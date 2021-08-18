@@ -1,0 +1,105 @@
+* {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+  
+  body {
+    font: unset !important;
+    padding: 0;
+    margin: 0;
+  }
+
+  #header{
+      font: 16px/26px "Raleway", sans-serif !important;
+  }
+
+  #footer{
+    font: 16px/26px "Raleway", sans-serif !important;
+  }
+  
+  #notfound {
+    position: relative;
+    height: 88vh;
+  }
+  
+  #notfound .notfound {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+  }
+  
+  .notfound {
+    max-width: 410px !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+  
+  .notfound .notfound-404 {
+    height: 280px !important;
+    position: relative !important;
+    z-index: -1 !important;
+  }
+  
+  .notfound .notfound-404 h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 230px !important;
+    margin: 0px !important;
+    font-weight: 900 !important;
+    position: absolute !important;
+    left: 50% !important;
+    -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+    background: url('http://localhost:8080/images/bg.jpg') no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  
+  .notfound h2 {
+    font-family: 'Montserrat', sans-serif;
+    color: whitesmoke;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 0;
+  }
+  
+  .notfound p {
+    font-family: 'Montserrat', sans-serif;
+    color: whitesmoke;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    margin-top: 0px;
+  }
+  
+  .notfound a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: rgb(11,15,72);
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 40px;
+    color: #fff;
+    font-weight: 700;
+  }
+  
+  
+  @media only screen and (max-width: 767px) {
+      .notfound .notfound-404 {
+        height: 142px !important;
+      }
+      .notfound .notfound-404 h1 {
+        font-size: 112px !important;
+      }
+  }
+  

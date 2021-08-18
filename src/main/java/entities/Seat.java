@@ -1,5 +1,6 @@
 package entities;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "seats")
@@ -20,10 +24,14 @@ public class Seat {
 	private int row;
 	private int number;	// column
 	
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Room.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "room_id", insertable=true)
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity=Room.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "room_id")
 	private Room room;
-
+	
+	@Transient
+	private boolean isTaken = false;
+	
 	public Seat() {}
 	
 	public Seat(int row, int number, Room room) {
@@ -56,13 +64,29 @@ public class Seat {
 		this.number = number;
 	}
 
+	@JsonIgnore
 	public Room getRoom() {
 		return room;
 	}
 
+	@JsonIgnore
 	public void setRoom(Room room) {
 		this.room = room;
 	}
+
+	public boolean isTaken() {
+		return isTaken;
+	}
+
+	public void setTaken(boolean isTaken) {
+		this.isTaken = isTaken;
+	}
+
+	@Override
+	public String toString() {
+		return "Seat [id=" + id + ", row=" + row + ", number=" + number + ", room=" + room + "]";
+	}
+
 	
 	
 }

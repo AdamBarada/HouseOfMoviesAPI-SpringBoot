@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width">
+    <title>Movies</title>
+    <script src="https://kit.fontawesome.com/c8e4d183c2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="http://localhost:8080/movie-details/css/movie-details.css">
+    <link rel="stylesheet" href="http://localhost:8080/shared/styles.css">
+    <link rel="shortcut icon" href="http://localhost:8080/images/logo.png">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div id="header">
+    </div>
+    <div id="cover">
+        <div id="loop" class="center"></div>
+        <div id="bike-wrapper" class="center">
+            <div id="bike" class="centerBike"></div>
+        </div>
+    </div>
+    <div class="general-container" style="margin-top: 70px;">
+        <div class="background-container">
+            <img id="movieImage" src="" alt="." />
+        </div>
+        <div class="info-container">
+            <div class="shifted-down">
+                <div class="row">
+                    <div class="col-lg-8 col-12 px-md-5 text-container">
+                        <h1 id="title"></h1>
+                        <p id="date">
+                        </p>
+                        <p id="description">
+                        </p>
+                        <p id="runtime">
+                        </p>
+                        <p id="genres">
+                        </p>
+                        <p id="director"></p>
+                        <p id="cast">
+                        </p>
+                        <a href="http://localhost:8080/screenings" onclick="javascript:goToScreenings()" class="btn imdb-button">View Available Screenings </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer"></div>
+    <script>
+        $(document).ready(function() {
+            $('#header').load('http://localhost:8080/shared/header.html');
+            $('#footer').load('http://localhost:8080/shared/footer.html');
+        });
+    </script>
+    <script src="http://localhost:8080/movie-details/js/movie-details.js"></script>
+</body>
+
+</html>

@@ -3,6 +3,7 @@ package entities;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,8 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "screenings")
-public class Screening {
+public class Screening implements Comparable<Screening> {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -45,7 +45,10 @@ public class Screening {
 	
 	@Column(name = "price_per_seat")
 	private Float price;
-
+	
+	@Transient
+	private Status status;
+	
 	public Screening() {}
 	
 	public Screening(Movie movie, Room room, Date date, Time time, Float price) {
@@ -104,6 +107,28 @@ public class Screening {
 	public void setTime(Time time) {
 		this.time = time;
 	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	
+	
+	@Override
+	public String toString() {
+		return "Screening [id=" + id + ", movie=" + movie + ", room=" + room + ", date=" + date + ", time=" + time
+				+ ", price=" + price + "]";
+	}
+
+	@Override
+	public int compareTo(Screening o) {
+		Timestamp ts1 = Timestamp.valueOf(LocalDateTime.of(getDate().toLocalDate(), getTime().toLocalTime()));
+		Timestamp ts2 = Timestamp.valueOf(LocalDateTime.of(o.getDate().toLocalDate(), o.getTime().toLocalTime()));
+		return ts1.compareTo(ts2);
+	}
 	
 }

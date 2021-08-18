@@ -1,10 +1,5 @@
 package dto.screening;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-
 public class ScreeningAddDto {
 
 	private Long movie;
@@ -19,8 +14,7 @@ public class ScreeningAddDto {
 	
 	public ScreeningAddDto() {}
 
-	public ScreeningAddDto(Long movie, Long room, Float price, int day, int month, int year, int hour, int min,
-			int sec) {
+	public ScreeningAddDto(Long movie, Long room, Float price, int day, int month, int year, int hour, int min) {
 		super();
 		this.movie = movie;
 		this.room = room;
@@ -30,7 +24,7 @@ public class ScreeningAddDto {
 		this.year = year;
 		this.hour = hour;
 		this.min = min;
-		this.sec = sec;
+		this.sec = 0;
 	}
 
 	public Long getMovie() {

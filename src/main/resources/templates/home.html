@@ -1,0 +1,58 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width">
+    <title>Home</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
+    </script>
+    <script>
+        $('#spinner').load('http://localhost:8080/shared/spinner.html');
+    </script>
+    <link rel="stylesheet" href="http://localhost:8080/home/css/home.css">
+    <link rel="stylesheet" href="http://localhost:8080/shared/styles.css">
+    <link rel="stylesheet" href="http://localhost:8080/shared/jquery-libraries/css/lightslider.css">
+    <link rel="shortcut icon" href="http://localhost:8080/images/logo.png">
+    <script src="http://localhost:8080/shared/jquery-libraries/js/lightslider.js"></script>
+</head>
+
+<body>
+    <div id="cover">
+        <div id="loop" class="center"></div>
+        <div id="bike-wrapper" class="center">
+            <div id="bike" class="centerBike"></div>
+        </div>
+    </div>
+    <div id="header">
+    </div>
+    <section id="main">
+        <h1 class="showcase-heading">Latest Releases</h1>
+        <ul id="autoWidth" class="cS-hidden">
+        </ul>
+    </section>
+    <section id="latest">
+        <h2 class="latest-heading">Recommended for you</h2>
+        <ul id="autoWidth2" class="cS-hidden">
+        </ul>
+    </section>
+    <section id="movies">
+        <h2 class="latest-heading">Movies</h2>
+    </section>
+    <section id="movies-list">
+    </section>
+    <div class="btns">
+        <button type="button" id="previous">Previous</button>
+        <button type="button" id="next">Next</button>
+    </div>
+    <div id="footer"></div>
+    <script>
+        $(document).ready(function() {
+            $('#header').load('http://localhost:8080/shared/header.html');
+            $('#footer').load('http://localhost:8080/shared/footer.html');
+        });
+    </script>
+    <script type="text/javascript" src="http://localhost:8080/home/js/home.js"></script>
+</body>
+
+</html>

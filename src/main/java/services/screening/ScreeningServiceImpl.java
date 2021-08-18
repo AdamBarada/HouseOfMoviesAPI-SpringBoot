@@ -1,9 +1,13 @@
 package services.screening;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.sql.Date;
 import java.sql.Time;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +15,23 @@ import org.springframework.stereotype.Component;
 
 import dto.screening.ScreeningAddDto;
 import entities.Movie;
+import entities.Reservation;
 import entities.Room;
 import entities.Screening;
-import exceptions.MovieNotFoundException;
-import exceptions.RoomNotFoundException;
-import exceptions.ScreeningNotFoundException;
-import exceptions.ScreeningTimeNotValidException;
+import entities.Status;
+import exceptions.movie.MovieNotFoundException;
+import exceptions.room.RoomNotFoundException;
+import exceptions.screening.NoScreeningForMovieException;
+import exceptions.screening.ScreeningNotFoundException;
+import exceptions.screening.ScreeningTimeNotValidException;
 import repositories.MovieRepository;
 import repositories.RoomRepository;
 import repositories.ScreeningRepository;
-import utils.TimestampConverter;
+import services.reservation.ReservationService;
+import services.room.RoomService;
 
 @Component
-public class ScreeningServiceImpl implements ScreeningService {
+public class ScreeningServiceImpl implements ScreeningService  {
 
 	@Autowired 
 	private ScreeningRepository screeningRepository;
@@ -34,77 +42,166 @@ public class ScreeningServiceImpl implements ScreeningService {
 	@Autowired
 	private RoomRepository roomRepository;
 	
+	@Autowired
+	private ReservationService reservationService;
+	
+	@Autowired
+	private RoomService roomService;
+	
 	@Override
-	public Screening save(ScreeningAddDto screeningDto) {
+	public List<Screening> findAll() {
+		List<Screening> screenings = screeningRepository.findAll();
+		if(screenings.size() != 0) {
+			for(Screening s : screenings) {
+				s.setStatus(setStatus(s));
+				LocalDateTime t=LocalDateTime.of(s.getDate().toLocalDate(), s.getTime().toLocalTime()).plusDays(1);
+				s.setDate(Date.valueOf(t.toLocalDate()));
+			}
+		}
+		Collections.sort(screenings);
+		return screenings;
+	}
+
+	@Override
+	public Screening findById(Long id) {
+		Screening screening = screeningRepository.findById(id)
+				.orElseThrow(() -> new ScreeningNotFoundException(id));
+		screening.setStatus(setStatus(screening));
+		LocalDateTime t=LocalDateTime.of(screening.getDate().toLocalDate(), screening.getTime().toLocalTime()).plusDays(1);
+		screening.setDate(Date.valueOf(t.toLocalDate()));
+		return screening;
+	}
+	
+	@Override
+	public Screening save(ScreeningAddDto screeningDto) throws ScreeningTimeNotValidException {
 		Movie movie = movieRepository.findById(screeningDto.getMovie()).orElseThrow(() -> 
 				new MovieNotFoundException(screeningDto.getMovie()));
 		Room room = roomRepository.findById(screeningDto.getRoom()).orElseThrow(()->
 				new RoomNotFoundException(screeningDto.getMovie()));
 		
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, screeningDto.getYear());
-		cal.set(Calendar.MONTH, screeningDto.getMonth());
-		cal.set(Calendar.DATE, screeningDto.getDay());
-		cal.set(Calendar.HOUR_OF_DAY, screeningDto.getHour());
-		cal.set(Calendar.MINUTE, screeningDto.getMin());
-		cal.set(Calendar.SECOND, screeningDto.getSec());
-		Date date = new Date(cal.getTimeInMillis());
-		Time time = new Time(cal.getTimeInMillis());
+		Date date = Date.valueOf(LocalDate.of(screeningDto.getYear(), screeningDto.getMonth(), screeningDto.getDay()+1));
+		Time time = Time.valueOf(LocalTime.of(screeningDto.getHour(), screeningDto.getMin(), 0));
+		
+		if(date.before(Date.valueOf(LocalDate.now()))) {
+			throw new ScreeningTimeNotValidException();
+		}
 		
 		Screening screening = new Screening(movie, room,
 				date, time, screeningDto.getPrice());
-		try {
-			if(!timeIsValid(screening)) {
-				throw new ScreeningTimeNotValidException();
-			}
-			else return screeningRepository.save(screening);
-		} catch (ScreeningTimeNotValidException e) {
-			return null;
+		if(!timeIsValid(screening)) {
+			throw new ScreeningTimeNotValidException();
 		}
+		else return screeningRepository.save(screening);
 		
 	}
-	
-	@SuppressWarnings("deprecation")
-	public boolean timeIsValid(Screening screening) {
+
+	@Override
+	public Screening update(Long id, ScreeningAddDto screeningDto) throws ScreeningTimeNotValidException{
+		Movie movie = movieRepository.findById(screeningDto.getMovie()).orElseThrow(() -> 
+				new MovieNotFoundException(screeningDto.getMovie()));
+		Room room = roomRepository.findById(screeningDto.getRoom()).orElseThrow(()->
+			new RoomNotFoundException(screeningDto.getMovie()));
+		
+		Date date = Date.valueOf(LocalDate.of(screeningDto.getYear(), screeningDto.getMonth(), screeningDto.getDay()+ 1));
+		Time time = Time.valueOf(LocalTime.of(screeningDto.getHour(), screeningDto.getMin(), 0));
+		
+		Screening screeningCheck = new Screening(movie, room, date, time, screeningDto.getPrice());
+		if(!timeIsValid(screeningCheck)) {
+			throw new ScreeningTimeNotValidException();
+		}
+		
+		Screening updatedScreening = screeningRepository.findById(id).map(screening -> {
+			screening.setMovie(movie);
+			screening.setRoom(room);
+			screening.setDate(date);
+			screening.setTime(time);
+			screening.setPrice(screeningDto.getPrice());
+			return screeningRepository.save(screening);
+		}).orElseGet(() -> {
+			Screening newScreening = screeningCheck;
+			newScreening.setId(id);
+			return screeningRepository.save(newScreening);
+		});
+		return updatedScreening;
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		List<Reservation> reservations = reservationService.findAll();
+		if(reservations.size() != 0) {
+			for(Reservation r : reservations) {
+				if(r.getScreening().getId().equals(id)) {
+					reservationService.deleteById(r.getId());
+				}
+			}
+		}
+		screeningRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Screening> findAllForMovie(Long id) {
+		movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(id));
+		List<Screening> screenings = screeningRepository.findAll();
+		if(screenings.size()==0) throw new NoScreeningForMovieException(id);
+		List<Screening> screeningsForMovie = new ArrayList<Screening>();
+		for(Screening s : screenings) {
+			if(s.getMovie().getId().equals(id)) {
+				screeningsForMovie.add(s);
+			}
+		}
+		if(screeningsForMovie.size() == 0) throw new NoScreeningForMovieException(id);
+		for(Screening s : screeningsForMovie) {
+			s.setStatus(setStatus(s));
+			LocalDateTime t=LocalDateTime.of(s.getDate().toLocalDate(), s.getTime().toLocalTime()).plusDays(1);
+			s.setDate(Date.valueOf(t.toLocalDate()));
+		}
+		Collections.sort(screeningsForMovie);
+		return screeningsForMovie;
+	}
+
+	private boolean timeIsValid(Screening screening) {
 		List<Screening> screenings = screeningRepository.findAll();
 		if(screenings.size()==0) return true;
+		Timestamp start2 = Timestamp.valueOf(LocalDateTime.of(screening.getDate().toLocalDate(), screening.getTime().toLocalTime()));
+		Timestamp end2 = Timestamp.valueOf(LocalDateTime.of(screening.getDate().toLocalDate(), 
+				screening.getTime().toLocalTime()).plusMinutes(screening.getMovie().getDuration()));
 		for(Screening s : screenings) {
-			if(s.getRoom() == screening.getRoom()) {		
-				Calendar start1 = Calendar.getInstance();
-				start1.set(Calendar.YEAR, s.getDate().getYear());
-				start1.set(Calendar.MONTH, s.getDate().getMonth());
-				start1.set(Calendar.DATE, s.getDate().getDate());
-				start1.set(Calendar.HOUR_OF_DAY, s.getTime().getHours());
-				start1.set(Calendar.MINUTE, s.getTime().getMinutes());
-				start1.set(Calendar.SECOND, s.getTime().getSeconds());
-				Calendar end1 = start1;
-				end1.add(Calendar.MINUTE, start1.get(Calendar.MINUTE) + s.getMovie().getDuration());
-				
-				Calendar start2 = Calendar.getInstance();
-				start2.set(Calendar.YEAR, screening.getDate().getYear());
-				start2.set(Calendar.MONTH, screening.getDate().getMonth());
-				start2.set(Calendar.DATE, screening.getDate().getDate());
-				start2.set(Calendar.HOUR_OF_DAY, screening.getTime().getHours());
-				start2.set(Calendar.MINUTE, screening.getTime().getMinutes());
-				start2.set(Calendar.SECOND, screening.getTime().getSeconds());
-				Calendar end2 = start2;
-				end2.add(Calendar.MINUTE, start2.get(Calendar.MINUTE) + screening.getMovie().getDuration());
-				
+			if(s.getRoom().getId() == screening.getRoom().getId()) {
+				Timestamp start1 = Timestamp.valueOf(LocalDateTime.of(s.getDate().toLocalDate(), s.getTime().toLocalTime()));
+				Timestamp end1 = Timestamp.valueOf(LocalDateTime.of(s.getDate().toLocalDate(), 
+						screening.getTime().toLocalTime()).plusMinutes(s.getMovie().getDuration()));
+				if(start1.equals(start2) || end1.equals(end2)) return false;
 				if(start2.after(start1) && start2.before(end1)) return false;
 				if(end2.after(start1) && end2.before(end1)) return false;
 			}
 		}
 		return true;
 	}
-
-	@Override
-	public List<Screening> findAll() {
-		return screeningRepository.findAll();
+	
+	private Status setStatus(Screening s) {
+		Timestamp time = Timestamp.valueOf(LocalDateTime.of(s.getDate().toLocalDate(), s.getTime().toLocalTime()));
+		Timestamp time2 = Timestamp.valueOf(LocalDateTime.of(s.getDate().toLocalDate(), s.getTime().toLocalTime()).plusMinutes(20));
+		Timestamp now =  Timestamp.valueOf(LocalDateTime.now());
+		if(time.after(now)) {
+			return Status.AVAILABLE;
+		}
+		else if(time.equals(now)) {
+			return Status.STARTED;
+		}
+		else if(time.before(now) && time2.after(now)) {
+			return Status.STARTED;
+		}
+		else return Status.PAST;
+		
 	}
 
 	@Override
-	public Screening findById(Long id) {
-		return screeningRepository.findById(id).orElseThrow(() -> new ScreeningNotFoundException(id));
+	public Screening screeningWithSeats(Long id) {
+		Screening screening = screeningRepository.findById(id)
+				.orElseThrow(() -> new ScreeningNotFoundException(id));
+		screening.setRoom(roomService.roomForScreening(id));
+		LocalDateTime t=LocalDateTime.of(screening.getDate().toLocalDate(), screening.getTime().toLocalTime()).plusDays(1);
+		screening.setDate(Date.valueOf(t.toLocalDate()));
+		return screening;
 	}
-
 }

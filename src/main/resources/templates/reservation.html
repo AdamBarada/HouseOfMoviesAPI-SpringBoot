@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reservation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="http://localhost:8080/reservation/css/reservation.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="http://localhost:8080/shared/styles.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="http://localhost:8080/images/logo.png">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
+    </script>
+    <script>
+        $('#spinner').load('http://localhost:8080/shared/spinner.html');
+    </script>
+    <script src="http://localhost:8080/shared/jquery-libraries/js/jquery.seat-charts.js"></script>
+</head>
+
+<body class="newBody">
+    <div id="cover">
+        <div id="loop" class="center"></div>
+        <div id="bike-wrapper" class="center">
+            <div id="bike" class="centerBike"></div>
+        </div>
+    </div>
+    <div id="header" class="header"></div>
+    <div class="content">
+        <div class="main" style="margin-top: 70px;">
+            <h2 id="roomName"></h2>
+            <div class="demo">
+                <div id="seat-map">
+                    <div class="front">SCREEN</div>
+                </div>
+                <div class="booking-details">
+                    <ul class="book-left">
+                        <li>Movie </li>
+                        <li>Date </li>
+                        <li>Time </li>
+                        <li>Tickets</li>
+                        <li>Total</li>
+                    </ul>
+                    <ul class="book-right">
+                        <li id="movieName"></li>
+                        <li id="date"></li>
+                        <li id="screeningDate"></li>
+                        <li>: <span id="counter">0</span></li>
+                        <li>: <b><i>$</i><span id="total">0</span></b></li>
+                    </ul>
+                    <div class="clear"></div>
+
+                    <button class="checkout-button" id="addReservation">Book Now</button>
+                    <div id="legend"></div>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#header').load('http://localhost:8080/shared/header.html');
+        });
+    </script>
+    <script src="http://localhost:8080/shared/jquery-libraries/js/jquery.nicescroll.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="http://localhost:8080/shared/print.js"></script>
+    <script src="http://localhost:8080/reservation/js/reservation.js"></script>
+</body>
+
+</html>

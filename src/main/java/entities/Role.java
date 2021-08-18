@@ -7,8 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
+
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 public class Role {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +34,11 @@ public class Role {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", name=" + name + "]";
 	}
 	
 	
